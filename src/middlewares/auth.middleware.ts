@@ -2,18 +2,20 @@ import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken";
 
-interface AuthRequest extends Request {
+export interface AuthRequest extends Request {
   user?: { 
     userId: string;
     email:string;
     role: string;
+    companyId:string
    };
 }
 
-interface jwtPayload{
+export interface jwtPayload{
     userId: string;
     email:string;
     role: string;
+    companyId:string;
     iat:number;
     exp:number;
 }
@@ -23,7 +25,7 @@ export const authenticate= async(req:AuthRequest,res:Response,next:NextFunction)
     const token = req.header('Authorization')?.split(' ')[1];
     
     if(!token){
-      res.status(StatusCodes.BAD_REQUEST)
+      res.status(StatusCodes.UNAUTHORIZED)
          .json({
             success:false,
             message:"Token is required"
@@ -60,6 +62,7 @@ export const authorize=(role:string)=>{
           status:false,
           message: "Access denied" 
         });
+      return;
     }
 
     next();

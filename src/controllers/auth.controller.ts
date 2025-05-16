@@ -9,7 +9,7 @@ export const register=async (req:Request,res:Response): Promise<void>=>{
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      res.status(StatusCodes.BAD_REQUEST)
+      res.status(StatusCodes.CONFLICT)
          .json({ success:false,message: "User already exists" });
       return;
     }
@@ -62,7 +62,8 @@ export const login=async(req:Request,res:Response)=>{
     const payload={
       userId:user._id,
       email:user.email,
-      role:user.role
+      role:user.role,
+      companyId:user.companyId
     }
     const JWT_SECRET=process.env.JWT_SECRET!;
     const token= jwt.sign(payload,JWT_SECRET,{expiresIn:'7d'});

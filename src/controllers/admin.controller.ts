@@ -8,7 +8,7 @@ export const createCompany=async (req:Request,res:Response)=>{
     const {name,location}=req.body;
     const existingCompany= await Company.findOne({name});
     if(existingCompany){
-      res.status(StatusCodes.BAD_REQUEST)
+      res.status(StatusCodes.CONFLICT)
          .json({ success:false,message: "This company already exists" });
       return;
     }

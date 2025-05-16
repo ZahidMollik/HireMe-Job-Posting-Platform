@@ -21,7 +21,7 @@ const userSchema=new Schema({
   },
   companyId:{
     type:Schema.Types.ObjectId,
-    ref:"company",
+    ref:"Company",
     default:null
   }
 })
