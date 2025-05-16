@@ -1,6 +1,7 @@
 import {Request,Response} from "express";
 import Company from "../models/company.model";
 import { StatusCodes } from "http-status-codes";
+import User from "../models/user.model";
 
 export const createCompany=async (req:Request,res:Response)=>{
   try {
@@ -114,3 +115,66 @@ export const deleteCompanyById=async (req:Request,res:Response)=>{
   }
 }
 
+export const getAllUsers=async (req:Request,res:Response)=>{
+  try {
+    const users=await User.find();
+    res.status(StatusCodes.OK)
+       .json({
+          success:true,
+          message:"successfully get all users info",
+          data:users
+        });
+  } catch (error) {
+     res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+          success:false,
+          message:"something went wrong while geting all users info",
+          data:{},
+          error:error
+        });   
+  }
+}
+
+export const updateUserInfo=async (req:Request,res:Response)=>{
+  
+  try {
+    const {id}=req.params;
+    const {name,email,password,role,companyId}=req.body;
+    const user=await User.findByIdAndUpdate(id,{name,email,password,role,companyId},{new:true});
+    res.status(StatusCodes.OK)
+       .json({
+          success:true,
+          message:"successfully update user details",
+          data:user
+        });
+  } catch (error) {
+     res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+          success:false,
+          message:"something went wrong while updating user details by id",
+          data:{},
+          error:error
+        });   
+  }
+}
+
+export const deleteUser=async (req:Request,res:Response)=>{
+  try {
+    const {id}=req.params;
+    const user=await User.deleteOne({_id:id});
+    res.status(StatusCodes.OK)
+       .json({
+          success:true,
+          message:"successfully delete the user",
+          data:user
+        });
+  } catch (error) {
+     res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+          success:false,
+          message:"something went wrong while deleting the user",
+          data:{},
+          error:error
+        });   
+  }
+}
