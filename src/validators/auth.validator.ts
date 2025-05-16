@@ -7,6 +7,7 @@ export const registerUserSchema= z.object({
          .max(50,{message:"name must be not more than 50 characters"}),
   email:z.string()
          .trim()
+         .toLowerCase()
          .email({message:"please enter valid email address"}),
   password:z.string()
             .trim()
@@ -16,7 +17,9 @@ export const registerUserSchema= z.object({
         .default("jobseeker"),
   companyId:z.string()
              .optional()
-             .nullable()
+             .nullable(),
+  adminSecret:z.string()
+             .optional()
 })
 
 export const loginUserSchema=z.object({

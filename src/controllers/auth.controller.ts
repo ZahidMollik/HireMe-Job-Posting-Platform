@@ -5,13 +5,23 @@ import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken";
 
 export const register=async (req:Request,res:Response): Promise<void>=>{
-  const {name,email,password,role,companyId}=req.body;
+  const {name,email,password,role,companyId,adminSecret}=req.body;
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       res.status(StatusCodes.BAD_REQUEST)
          .json({ success:false,message: "User already exists" });
       return;
+    }
+    if (role === "admin") {
+      if (adminSecret!== process.env.ADMIN_SECRET) {
+        res.status(StatusCodes.FORBIDDEN)
+           .json({
+             success:false,
+             message: "Invalid admin secret"
+            });
+        return;
+      }
     }
     const salt= await bcryptjs.genSalt(10);
     const hashPassword=await bcryptjs.hash(password,salt);
