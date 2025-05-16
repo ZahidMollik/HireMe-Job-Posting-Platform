@@ -7,12 +7,7 @@ export const createJob=async (req:AuthRequest,res:Response)=>{
   try {
     const {title,description,location,salary,lastDateOfApply}=req.body;
     const {userId,companyId}=req.user as jwtPayload;
-    const existingJob= await Job.findOne({title});
-    if(existingJob){
-      res.status(StatusCodes.CONFLICT)
-         .json({ success:false,message: "This job already exists" });
-      return;
-    }
+    
     const job=await Job.create({title,description,location,salary,lastDateOfApply,createdBy:userId,companyId:companyId});
     res.status(StatusCodes.CREATED)
        .json({

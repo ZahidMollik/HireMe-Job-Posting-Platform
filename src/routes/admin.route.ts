@@ -8,7 +8,10 @@ import {
   deleteCompanyById,
   getAllUsers,
   updateUserInfo,
-  deleteUser
+  deleteUser,
+  getAllJob,
+  updateJobById,
+  deleteJob
  } from "../controllers/admin.controller";
 const router=Router();
 
@@ -23,5 +26,9 @@ router.delete('/companies/:id',deleteCompanyById);
 router.get('/users',getAllUsers)
 router.put('/users/:id',updateUserInfo)
 router.delete('/users/:id',deleteUser)
+
+router.get('/jobs',getAllJob)
+router.put('/jobs/:id',updateJobById)
+router.delete('/jobs/:id',deleteJob)
 
 export default router;
