@@ -13,7 +13,7 @@ export const registerUserSchema= z.object({
             .trim()
             .min(6,{message:"password must be at least 6 characters"})
             .max(50,{message:"password must be not more than 50 characters"}),
-  role:z.enum(["admin","empolyee","jobseeker"])
+  role:z.enum(["admin","employee","jobseeker"])
         .default("jobseeker"),
   companyId:z.string()
              .optional()
