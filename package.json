@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "tsc",
-    "start": "node --env-file=./.env --watch  ./dist/index.js",
+    "build":"tsc",
+    "prestart": "npm run build",
+    "start": "node --env-file=./.env --watch ./dist/index.js",
     "dev": "ts-node-dev --env-file=./.env --respawn --transpile-only ./src/index.ts"
   },
   "author": "",

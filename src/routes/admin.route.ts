@@ -15,11 +15,13 @@ import {
   getAllApplicationsForAdmin,
   getAdminAnalytics
  } from "../controllers/admin.controller";
+import { validate } from "../middlewares/validate.middleware";
+import { createCompanySchema } from "../validators/company.validator";
 const router=Router();
 
 router.use(authenticate,authorize("admin"));
 
-router.post('/companies',createCompany);
+router.post('/companies',validate(createCompanySchema),createCompany);
 router.get('/companies',getAllCompanies);
 router.get('/companies/:id',getCompanyById);
 router.put('/companies/:id',updateCompanyById);
