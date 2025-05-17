@@ -11,7 +11,9 @@ import {
   deleteUser,
   getAllJob,
   updateJobById,
-  deleteJob
+  deleteJob,
+  getAllApplicationsForAdmin,
+  getAdminAnalytics
  } from "../controllers/admin.controller";
 const router=Router();
 
@@ -30,5 +32,9 @@ router.delete('/users/:id',deleteUser)
 router.get('/jobs',getAllJob)
 router.put('/jobs/:id',updateJobById)
 router.delete('/jobs/:id',deleteJob)
+
+router.get('/application',getAllApplicationsForAdmin)
+
+router.get('/analytics',getAdminAnalytics)
 
 export default router;

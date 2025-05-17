@@ -3,6 +3,7 @@ import Company from "../models/company.model";
 import { StatusCodes } from "http-status-codes";
 import User from "../models/user.model";
 import Job from "../models/job.model";
+import Application from "../models/application.model";
 
 export const createCompany=async (req:Request,res:Response)=>{
   try {
@@ -249,3 +250,64 @@ export const deleteJob=async (req:Request,res:Response)=>{
         });   
   }
 }
+
+export const getAllApplicationsForAdmin = async (req: Request, res: Response) => {
+  try {
+    
+    const { companyId, status } = req.query;
+    const jobFilter: any = {};
+    if (companyId){
+       jobFilter.companyId = companyId;
+    }
+    const jobs = await Job.find(jobFilter).select("_id");
+    const jobIds = jobs.map((job) => job._id);
+
+    const applicationFilter: any = {};
+    if (jobIds.length > 0) {
+      applicationFilter.jobId = { $in: jobIds };
+    }
+    if (status) {
+      applicationFilter.status = status;
+    }
+
+    const applications = await Application.find(applicationFilter).sort({ createdAt: -1 });
+    res.status(StatusCodes.OK).json({
+      success: true,
+      data:applications,
+    });
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: "Failed to fetch applications",
+      error: (error as Error).message,
+    });
+  }
+};
+
+export const getAdminAnalytics = async (_req: Request, res: Response) => {
+  try {
+    const [totalCompanies, totalJobs, totalApplications,totalJobSeekers] = await Promise.all([
+      Company.countDocuments(),
+      Job.countDocuments(),
+      Application.countDocuments(),
+      User.countDocuments({role:"jobseeker"})
+    ]);
+
+    res.status(StatusCodes.OK).json({
+      success: true,
+      analytics: {
+        totalCompanies,
+        totalJobs,
+        totalApplications,
+        totalJobSeekers
+      }
+    });
+
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: "Failed to fetch analytics",
+      error: (error as Error).message
+    });
+  }
+};
