@@ -113,7 +113,7 @@ export const getAllApplication=async (req:AuthRequest,res:Response)=>{
     res.status(StatusCodes.OK)
        .json({
           success:true,
-          message:"successfully get all Application by user",
+          message:"successfully get all Application by jobseeker",
           data:applications
         });
   } catch (error) {
