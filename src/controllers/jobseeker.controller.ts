@@ -46,7 +46,8 @@ export const applyJob=async(req:AuthRequest,res:Response)=>{
 
 export const paymentSuccess = async (req: Request, res: Response) => {
   try {
-    const {total_amount, value_a, value_b, value_c } = req.body;
+    const {amount, value_a, value_b, value_c } = req.body;
+    
     const application = await Application.create({
       jobId: value_b,
       applicantId: value_a,
@@ -58,7 +59,7 @@ export const paymentSuccess = async (req: Request, res: Response) => {
     const invoice = await Invoice.create({
       applicationId: application._id,
       applicantId: value_a,
-      amount: total_amount,
+      amount: amount,
       paymentTime: new Date(),
     });
     

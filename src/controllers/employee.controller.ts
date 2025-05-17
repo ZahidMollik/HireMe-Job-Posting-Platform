@@ -118,7 +118,6 @@ export const deleteJob=async (req:AuthRequest,res:Response)=>{
 export const getAllApplicationByEmployee=async (req:AuthRequest,res:Response)=>{
   try {
     const employeeId=req.user?.userId;
-    console.log(employeeId);
     
     const jobs = await Job.find({ createdBy: employeeId }).select("_id");
     const jobIds = jobs.map(job => job._id);

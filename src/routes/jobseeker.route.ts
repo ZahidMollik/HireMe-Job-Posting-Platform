@@ -4,12 +4,11 @@ import { authenticate } from "../middlewares/auth.middleware";
 import { upload } from "../middlewares/fileUpload.middleware";
 
 const router=Router();
-router.use(authenticate);
 
-router.post('/apply/:jobId',upload.single('cv'),applyJob);
+router.post('/apply/:jobId',authenticate,upload.single('cv'),applyJob);
 router.post('/payments/ssl-success',paymentSuccess);
 router.post('/payments/ssl-fail',paymentFail);
-router.get('/application',getAllApplication);
-router.get('/jobs',getAllJob);
+router.get('/application',authenticate,getAllApplication);
+router.get('/jobs',authenticate,getAllJob);
 
 export default router;
